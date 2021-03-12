@@ -26,10 +26,10 @@
 
 
     <modules>
-        <module>BroadCast</module>
+        <module>Broadcast-service</module>
         <module>credit-service</module>
-        <module>Upload</module>
-        <module>Transactional</module>
+        <module>Upload-service</module>
+        <module>Transactional-service</module>
         <module>Middleware</module>
         <module>ContactList-Service</module>
         <module>config-server</module>
