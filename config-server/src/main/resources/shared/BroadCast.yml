@@ -1,0 +1,12 @@
+spring:
+  data:
+    mongodb:
+      host: localhost
+      username: user
+      password: password
+      database: messaging
+      port: 27017
+
+broadcast:
+  in: IN.BROADCAST
+  out: OUT.BROADCAST
