@@ -4,12 +4,8 @@ import com.trimeo.Broadcastservice.configs.QueueConfig;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.listener.MessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
@@ -38,7 +34,7 @@ public class QueueInitializer {
 
     @Bean
     Binding binding(Queue broadcastQueue, TopicExchange exchange){
-        log.info("Binding queue :::: " + broadcastQueue + " to exchange :::: " + exchange);
+        log.info("Binding queue :::: " + broadcastQueue + " to exchange :::: " + exchange );
         return BindingBuilder.bind(broadcastQueue).
                 to(exchange).
                 with(queueConfig.getRoutingKey());
@@ -50,12 +46,18 @@ public class QueueInitializer {
     }
 
     @Bean
-    MessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory ) {
-        SimpleMessageListenerContainer simpleMessageListenerContainer = new SimpleMessageListenerContainer();
-        simpleMessageListenerContainer.setConnectionFactory(connectionFactory);
-        simpleMessageListenerContainer.setPrefetchCount(queueConfig.getPrefetch());
-        simpleMessageListenerContainer.setQueues(broadcastQueue());
-        simpleMessageListenerContainer.setMessageListener(new Consumer());
-        return simpleMessageListenerContainer;
+    public SimpleMessageListenerContainer listenerContainer(
+            ConnectionFactory rabbitConnectionFactory,
+            Consumer messageListener
+    ){
+        SimpleMessageListenerContainer listenerContainer = new SimpleMessageListenerContainer();
+        listenerContainer.setConnectionFactory(rabbitConnectionFactory);
+        listenerContainer.setQueueNames(queueConfig.getIn());
+        listenerContainer.setMessageListener(messageListener);
+        listenerContainer.setAcknowledgeMode(AcknowledgeMode.AUTO);
+        listenerContainer.setPrefetchCount(queueConfig.getPrefetch());
+        listenerContainer.setDefaultRequeueRejected(false);
+        return listenerContainer;
     }
+
 }

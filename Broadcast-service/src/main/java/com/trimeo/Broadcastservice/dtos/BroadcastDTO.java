@@ -10,7 +10,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import java.time.OffsetDateTime;
 
 @Data
 @Builder
@@ -36,11 +35,11 @@ public class BroadcastDTO {
 
     @NotNull(message = "expiryTime cannot be null")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ", shape = JsonFormat.Shape.STRING)
-    private OffsetDateTime sendTime;
+    private String sendTime;
 
     @NotNull(message = "expiryTime cannot be null")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ", shape = JsonFormat.Shape.STRING)
-    private OffsetDateTime expiryTime;
+    private String expiryTime;
 
     @Positive
     @NotNull(message = "Payload must contain userID")
