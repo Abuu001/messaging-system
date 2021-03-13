@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: Broadcast-service
+  cloud:
+    config:
+      uri: http://localhost:8888
+#      password: password
+#      username: user
+      fail-fast: true
+  profiles:
+    active: native
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh

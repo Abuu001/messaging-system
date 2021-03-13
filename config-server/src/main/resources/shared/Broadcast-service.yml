@@ -7,6 +7,10 @@ spring:
       database: messaging
       port: 27017
 
+
 broadcast:
   in: IN.BROADCAST
   out: OUT.BROADCAST
+  exchange: KE.EXCH
+  prefetch: 10
+  routing-key: BROAD.KEY
