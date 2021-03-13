@@ -1,12 +1,16 @@
 spring:
   data:
     mongodb:
-      host: localhost
+      host: 127.0.0.1
       username: user
       password: password
       database: messaging
       port: 27017
-
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
 
 broadcast:
   in: IN.BROADCAST
