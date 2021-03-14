@@ -1,6 +1,7 @@
 package com.trimeo.Broadcastservice.amqp;
 
 import com.trimeo.Broadcastservice.configs.QueueConfig;
+import com.trimeo.Broadcastservice.exceptions.ExceptionHandler;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -48,6 +49,7 @@ public class QueueInitializer {
     @Bean
     public SimpleMessageListenerContainer listenerContainer(
             ConnectionFactory rabbitConnectionFactory,
+            ExceptionHandler exceptionHandler,
             Consumer messageListener
     ){
         SimpleMessageListenerContainer listenerContainer = new SimpleMessageListenerContainer();
@@ -56,6 +58,7 @@ public class QueueInitializer {
         listenerContainer.setMessageListener(messageListener);
         listenerContainer.setAcknowledgeMode(AcknowledgeMode.AUTO);
         listenerContainer.setPrefetchCount(queueConfig.getPrefetch());
+        listenerContainer.setErrorHandler(exceptionHandler);
         listenerContainer.setDefaultRequeueRejected(false);
         return listenerContainer;
     }
