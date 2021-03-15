@@ -17,4 +17,5 @@ broadcast:
   out: OUT.BROADCAST
   exchange: KE.EXCH
   prefetch: 10
+  consumerCount: 2
   routing-key: BROAD.KEY

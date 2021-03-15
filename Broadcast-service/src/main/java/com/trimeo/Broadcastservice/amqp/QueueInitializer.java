@@ -58,6 +58,7 @@ public class QueueInitializer {
         listenerContainer.setMessageListener(messageListener);
         listenerContainer.setAcknowledgeMode(AcknowledgeMode.AUTO);
         listenerContainer.setPrefetchCount(queueConfig.getPrefetch());
+        listenerContainer.setConcurrency(queueConfig.getConsumerCount());
         listenerContainer.setErrorHandler(exceptionHandler);
         listenerContainer.setDefaultRequeueRejected(false);
         return listenerContainer;

@@ -16,4 +16,5 @@ public class QueueConfig {
     private String exchange;
     private String routingKey;
     private int prefetch;
+    private String consumerCount;
 }
