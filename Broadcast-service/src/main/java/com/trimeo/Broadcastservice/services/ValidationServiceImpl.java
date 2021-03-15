@@ -1,16 +1,12 @@
 package com.trimeo.Broadcastservice.services;
 
-import com.trimeo.Broadcastservice.dtos.BroadcastDTO;
+import com.trimeo.Broadcastservice.interfaces.ValidationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import javax.validation.Valid;
+import org.springframework.validation.annotation.Validated;
 
 @Slf4j
 @Service
-public class ValidationServiceImpl {
-
-    public boolean validatePayload(@Valid BroadcastDTO message){
-        return true;
-    }
+@Validated
+public class ValidationServiceImpl implements ValidationService {
 }

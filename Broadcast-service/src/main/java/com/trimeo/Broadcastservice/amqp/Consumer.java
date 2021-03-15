@@ -10,8 +10,6 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.listener.api.ChannelAwareMessageListener;
 import org.springframework.stereotype.Component;
 
-import javax.validation.Valid;
-
 @Slf4j
 @Component
 @AllArgsConstructor
@@ -25,10 +23,5 @@ public class Consumer implements ChannelAwareMessageListener {
         BroadcastDTO broadCastPayload = mapper.readValue(message.getBody(), BroadcastDTO.class);
 
         log.info("Consuming Message - " + broadCastPayload);
-        sayHi(broadCastPayload);
-    }
-
-    void sayHi(@Valid BroadcastDTO message){
-        log.info("Alohaaaa");
     }
 }
