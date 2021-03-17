@@ -2,11 +2,11 @@ package com.trimeo.Broadcastservice.interfaces;
 
 import com.trimeo.Broadcastservice.dtos.BroadcastDTO;
 
+import javax.validation.Valid;
+
 public interface ValidationService {
 
-    boolean validateBroadcast(BroadcastDTO broadcastDTO);
-    boolean notExpired(BroadcastDTO broadcastDTO);
+    boolean validateBroadcast(@Valid BroadcastDTO broadcastDTO);
     boolean shortCodeActiveAndExist(String shortCode);
-    boolean checkIfMessageActive(BroadcastDTO broadcastDTO);
 
 }

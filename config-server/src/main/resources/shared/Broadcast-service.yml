@@ -19,6 +19,12 @@ broadcast:
   prefetch: 10
   consumerCount: 2
   routing-key: BROAD.KEY
+  message:
+    active-message: 1
+    active-status: 1
+  time:
+    format: yyyy-MM-dd HH:mm:ss.SSS
+    timezone: UTC+3
 
 logging:
   level:

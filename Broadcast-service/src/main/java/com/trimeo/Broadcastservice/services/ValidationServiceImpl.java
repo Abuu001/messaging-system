@@ -1,35 +1,53 @@
 package com.trimeo.Broadcastservice.services;
 
+import com.trimeo.Broadcastservice.configs.MessageStatusConfig;
+import com.trimeo.Broadcastservice.domains.Broadcast;
 import com.trimeo.Broadcastservice.dtos.BroadcastDTO;
 import com.trimeo.Broadcastservice.interfaces.ValidationService;
+import com.trimeo.Broadcastservice.repositories.BroadcastRepository;
+import com.trimeo.Broadcastservice.utils.DateUtils;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
+import java.sql.Timestamp;
+import java.util.Optional;
 
 @Slf4j
 @Service
 @Validated
+@RequiredArgsConstructor
 public class ValidationServiceImpl implements ValidationService {
+
+    @NonNull
+    private BroadcastRepository broadcastRepository;
+
+    @NonNull
+    private MessageStatusConfig messageStatusConfig;
 
     @Override
     public boolean validateBroadcast(@Valid BroadcastDTO broadcastDTO) {
-        return false;
-    }
 
-    @Override
-    public boolean notExpired(@Valid BroadcastDTO broadcastDTO) {
+        Optional<Broadcast> broadcast = broadcastRepository.findById(broadcastDTO.getBroadcastID());
+
+        if(broadcast.isPresent()){
+            // check if message is active : not cancelled
+            if(broadcast.get().getActive() == messageStatusConfig.getActiveMessage()) {
+                // check that send time hasn't passed
+                if(Timestamp.valueOf(broadcast.get().getExpiryTime()).getTime() >= Timestamp.valueOf(broadcast.get().getSendTime()).getTime()) {
+                    log.info("Message Passed Validation thus ready for charging " + broadcast.get().get_id());
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
     @Override
     public boolean shortCodeActiveAndExist(String shortCode) {
-        return false;
-    }
-
-    @Override
-    public boolean checkIfMessageActive(@Valid BroadcastDTO broadcastDTO) {
         return false;
     }
 }

@@ -27,6 +27,8 @@ public class Broadcast {
 
     private String sendTime;
 
+    private Integer active;
+
     private String sourceAddress;
 
     private Integer createdBy;
