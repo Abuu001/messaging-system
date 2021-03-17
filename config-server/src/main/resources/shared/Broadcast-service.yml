@@ -2,8 +2,8 @@ spring:
   data:
     mongodb:
       host: 127.0.0.1
-      username: user
-      password: password
+      username: admin
+#      password: password
       database: messaging
       port: 27017
   rabbitmq:
@@ -19,3 +19,9 @@ broadcast:
   prefetch: 10
   consumerCount: 2
   routing-key: BROAD.KEY
+
+logging:
+  level:
+    org:
+      springframework:
+        data: debug
