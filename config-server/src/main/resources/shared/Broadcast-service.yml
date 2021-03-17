@@ -25,6 +25,9 @@ broadcast:
   time:
     format: yyyy-MM-dd HH:mm:ss.SSS
     timezone: UTC+3
+  async:
+    threadPoolSize: 10
+    maxThreadPoolSize: 10
 
 logging:
   level:
