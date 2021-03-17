@@ -5,7 +5,6 @@ import com.trimeo.Broadcastservice.domains.Broadcast;
 import com.trimeo.Broadcastservice.dtos.BroadcastDTO;
 import com.trimeo.Broadcastservice.interfaces.ValidationService;
 import com.trimeo.Broadcastservice.repositories.BroadcastRepository;
-import com.trimeo.Broadcastservice.utils.DateUtils;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
