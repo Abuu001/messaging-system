@@ -1,5 +1,6 @@
 package com.trimeo.Broadcastservice.exceptions;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ErrorHandler;
@@ -16,7 +17,6 @@ public class ExceptionHandler implements ErrorHandler {
     @Override
     public void handleError(Throwable throwable) {
         // wrong payload in Message consumed from queue
-        log.info(throwable.getCause().getMessage());
         if(throwable.getCause() instanceof ConstraintViolationException ){
             ConstraintViolationException constraintViolationException =
                     (ConstraintViolationException) throwable.getCause();
@@ -28,7 +28,12 @@ public class ExceptionHandler implements ErrorHandler {
                 errorList.add(violation.getPropertyPath().toString().split("\\.")[2] + " : " +violation.getMessage());
             }
 
-            log.info("Error in payload fetched from queue :: " +errorList.toString());
+            log.error("Error in payload fetched from queue :: " +errorList.toString());
+        }
+
+        // if payload is not json payload
+        if(throwable.getCause() instanceof JsonParseException){
+            log.error("Wrong payload pushed to queue: payload must be of the type JSON");
         }
     }
 }
