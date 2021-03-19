@@ -48,4 +48,6 @@ public class BroadcastDTO {
 
     @NotNull
     private boolean isRecurring;
+
+    private boolean send = false;
 }

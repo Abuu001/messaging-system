@@ -24,7 +24,12 @@ public class ProcessorServiceImpl implements ProcessorService {
 
         if(validationService.validateBroadcastPayload(broadcastDTO) &&
         validationService.shortCodeActiveAndExist(broadcastDTO.getSourceAddress())){
-            //
+
+            if(broadcastDTO.isSend()){
+                //TODO: Call service incharge of messaging sending
+            }else{
+                //TODO: charge message and send to delay xchange
+            }
         }
     }
 
@@ -39,8 +44,7 @@ public class ProcessorServiceImpl implements ProcessorService {
     }
 
     @Override
-    public boolean chargeBroadcast(BroadcastDTO broadcastDTO) {
-        return false;
+    public void chargeBroadcast(BroadcastDTO broadcastDTO) {
     }
 
     @Override
