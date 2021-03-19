@@ -2,9 +2,11 @@ package com.trimeo.Broadcastservice.services;
 
 import com.trimeo.Broadcastservice.configs.MessageStatusConfig;
 import com.trimeo.Broadcastservice.domains.Broadcast;
+import com.trimeo.Broadcastservice.domains.Shortcodes;
 import com.trimeo.Broadcastservice.dtos.BroadcastDTO;
 import com.trimeo.Broadcastservice.interfaces.ValidationService;
 import com.trimeo.Broadcastservice.repositories.BroadcastRepository;
+import com.trimeo.Broadcastservice.repositories.ShortcodesRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +29,9 @@ public class ValidationServiceImpl implements ValidationService {
     @NonNull
     private MessageStatusConfig messageStatusConfig;
 
+    @NonNull
+    private ShortcodesRepository shortcodesRepository;
+
     @Override
     public boolean validateBroadcast(@Valid BroadcastDTO broadcastDTO) {
 
@@ -47,6 +52,14 @@ public class ValidationServiceImpl implements ValidationService {
 
     @Override
     public boolean shortCodeActiveAndExist(String shortCode) {
+
+        Optional<Shortcodes> shortcodes = shortcodesRepository.findByName(shortCode);
+
+        if(shortcodes.isPresent()){
+            if(shortcodes.get().getActive() == messageStatusConfig.getActiveMessage()){
+                return true;
+            }
+        }
         return false;
     }
 }
