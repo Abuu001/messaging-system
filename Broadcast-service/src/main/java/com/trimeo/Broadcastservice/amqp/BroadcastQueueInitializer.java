@@ -13,10 +13,13 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Slf4j
 @Configuration
 @AllArgsConstructor
-public class QueueInitializer {
+public class BroadcastQueueInitializer {
 
     @NonNull
     private QueueConfig queueConfig;
@@ -27,18 +30,23 @@ public class QueueInitializer {
         return new Queue(queueConfig.getIn(),true,false,false);
     }
 
+    // special exchange to enable delay/schedule of messages
     @Bean
-    TopicExchange broadcastExchange(){
-        log.info("Initializing exchange :::: " +queueConfig.getExchange());
-        return new TopicExchange(queueConfig.getExchange(), true, false);
+    CustomExchange delayExchange(){
+        Map<String, Object> args = new HashMap<>();
+        args.put("x-delayed-type", "direct");
+        args.put("type", "x-delayed-message");
+
+        return new CustomExchange(queueConfig.getDelayExchange(),"x-delayed-message",true,
+                false,args);
     }
 
     @Bean
-    Binding binding(Queue broadcastQueue, TopicExchange exchange){
+    Binding binding(Queue broadcastQueue, CustomExchange exchange){
         log.info("Binding queue :::: " + broadcastQueue + " to exchange :::: " + exchange );
         return BindingBuilder.bind(broadcastQueue).
                 to(exchange).
-                with(queueConfig.getRoutingKey());
+                with(queueConfig.getRoutingKey()).noargs();
     }
 
     @Bean

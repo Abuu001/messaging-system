@@ -11,8 +11,10 @@ public class QueueConfig {
 
     private String in;
     private String out;
-    private String exchange;
+    private String outExchange;
+    private String delayExchange;
     private String routingKey;
     private int prefetch;
     private String consumerCount;
+    private String outKey;
 }

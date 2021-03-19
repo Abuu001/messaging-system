@@ -15,10 +15,12 @@ spring:
 broadcast:
   in: IN.BROADCAST
   out: OUT.BROADCAST
-  exchange: KE.EXCH
+  out-exchange: KE.EXCH
+  delay-exchange: DELAY.EXCH
   prefetch: 10
   consumerCount: 2
   routing-key: BROAD.KEY
+  out_key: OUT.KEY
   message:
     active-message: 1
     active-status: 1
