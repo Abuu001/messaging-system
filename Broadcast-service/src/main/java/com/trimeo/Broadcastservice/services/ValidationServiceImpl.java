@@ -56,9 +56,7 @@ public class ValidationServiceImpl implements ValidationService {
         Optional<Shortcodes> shortcodes = shortcodesRepository.findByName(shortCode);
 
         if(shortcodes.isPresent()){
-            if(shortcodes.get().getActive() == messageStatusConfig.getActiveMessage()){
-                return true;
-            }
+            return shortcodes.get().getActive() == messageStatusConfig.getActiveMessage();
         }
         return false;
     }
