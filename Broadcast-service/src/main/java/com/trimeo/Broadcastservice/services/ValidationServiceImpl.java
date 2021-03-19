@@ -33,7 +33,7 @@ public class ValidationServiceImpl implements ValidationService {
     private ShortcodesRepository shortcodesRepository;
 
     @Override
-    public boolean validateBroadcast(@Valid BroadcastDTO broadcastDTO) {
+    public boolean validateBroadcastPayload(@Valid BroadcastDTO broadcastDTO) {
 
         Optional<Broadcast> broadcast = broadcastRepository.findById(broadcastDTO.getBroadcastID());
 

@@ -6,7 +6,7 @@ import javax.validation.Valid;
 
 public interface ValidationService {
 
-    boolean validateBroadcast(@Valid BroadcastDTO broadcastDTO);
+    boolean validateBroadcastPayload(@Valid BroadcastDTO broadcastDTO);
     boolean shortCodeActiveAndExist(String shortCode);
 
 }
