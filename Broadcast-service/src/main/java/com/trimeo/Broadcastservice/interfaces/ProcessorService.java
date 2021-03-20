@@ -7,7 +7,7 @@ import java.util.Set;
 public interface ProcessorService {
 
     void incomingBroadcastPayload(BroadcastDTO broadcastDTO);
-    int fetchNumberContactsInBroadcast(Set<String> list);
+    int fetchNumberContactsInBroadcast(BroadcastDTO broadcastDTO);
     Set<String> fetchContactsForBroadcast(BroadcastDTO broadcastDTO);
     void chargeBroadcast(BroadcastDTO broadcastDTO);
     void scheduleChargedBroadcast();
