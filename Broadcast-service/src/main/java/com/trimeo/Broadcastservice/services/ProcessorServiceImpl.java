@@ -52,8 +52,7 @@ public class ProcessorServiceImpl implements ProcessorService {
             listIds.add(Integer.valueOf(broadcastDTO.getListIDs().split(",")[i]));
         }
 
-        Set<String> list = contactlistRepository.findContactId(listIds);
-        return list;
+        return contactlistRepository.findContactId(listIds);
     }
 
     @Override

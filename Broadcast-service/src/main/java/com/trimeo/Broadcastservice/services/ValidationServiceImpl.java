@@ -42,11 +42,12 @@ public class ValidationServiceImpl implements ValidationService {
             if(broadcast.get().getActive() == messageStatusConfig.getActiveMessage()) {
                 // check that send time hasn't passed
                 if(Timestamp.valueOf(broadcast.get().getExpiryTime()).getTime() >= Timestamp.valueOf(broadcast.get().getSendTime()).getTime()) {
-                    log.info("Message Passed Validation thus ready for charging " + broadcast.get().get_id());
+                    log.info("Message Passed Validation " + broadcast.get().get_id());
                     return true;
                 }
             }
         }
+        log.error(":::::: Payload for Broadcast message_id " +broadcastDTO.getBroadcastID()+ " Failed validation :::::::");
         return false;
     }
 
@@ -58,6 +59,7 @@ public class ValidationServiceImpl implements ValidationService {
         if(shortcodes.isPresent()){
             return shortcodes.get().getActive() == messageStatusConfig.getActiveMessage();
         }
+        log.error(":::::: Shortcode " + shortCode + " Failed validation ::::::: ");
         return false;
     }
 }
