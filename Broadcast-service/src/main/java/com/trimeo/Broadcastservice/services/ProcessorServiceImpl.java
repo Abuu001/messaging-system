@@ -1,8 +1,11 @@
 package com.trimeo.Broadcastservice.services;
 
+import com.trimeo.Broadcastservice.domains.ConsumptionRates;
 import com.trimeo.Broadcastservice.dtos.BroadcastDTO;
 import com.trimeo.Broadcastservice.interfaces.ProcessorService;
+import com.trimeo.Broadcastservice.repositories.ConsumptionRateRepository;
 import com.trimeo.Broadcastservice.repositories.ContactlistRepository;
+import com.trimeo.Broadcastservice.utils.SMSUtils;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +26,12 @@ public class ProcessorServiceImpl implements ProcessorService {
 
     @NonNull
     private final ContactlistRepository contactlistRepository;
+
+    @NonNull
+    private final ConsumptionRateRepository ratesRepository;
+
+    @NonNull
+    private final SMSUtils smsUtils;
 
     @Override
     public void incomingBroadcastPayload(BroadcastDTO broadcastDTO) {
@@ -57,9 +66,26 @@ public class ProcessorServiceImpl implements ProcessorService {
 
     @Override
     public void chargeBroadcast(BroadcastDTO broadcastDTO) {
-        log.info("wahala ::::: " + fetchNumberContactsInBroadcast(broadcastDTO));
-        // TODO: Get message length * number of recipients * chargeRate
+
+        log.info("Fetching consumption rate for client ::: " + broadcastDTO.getClientCode());
+        ConsumptionRates rates = ratesRepository.findByClientId(broadcastDTO.getClientID());
+
+        log.info("::::::::  Calculating sms cost ::::::::::::");
+        double messageLength = SMSUtils.getPartCount(broadcastDTO.getMessage());
+        double numberOfRecipients = fetchNumberContactsInBroadcast(broadcastDTO);
+        double consumptionRate = rates.getRate();
+
+        double smsCost = messageLength * numberOfRecipients * consumptionRate;
+        log.info("Total sms cost ::::: " + smsCost + " units :::::");
+
         // TODO: Send to creditService for charging
+        Boolean charged = true;
+
+        if(charged){
+            scheduleChargedBroadcast();
+        }else {
+            log.info("Failed to charge the broadcast message");
+        }
 
     }
 

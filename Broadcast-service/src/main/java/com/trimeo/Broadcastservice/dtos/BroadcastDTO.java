@@ -46,6 +46,10 @@ public class BroadcastDTO {
     @NotBlank(message = "clientCode cannot be blank")
     private String clientCode;
 
+    @NotNull(message = "clientID cannot be null")
+    @Positive
+    private Integer clientID;
+
     @NotNull
     private boolean isRecurring;
 
