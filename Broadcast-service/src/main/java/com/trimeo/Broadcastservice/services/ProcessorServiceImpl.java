@@ -1,10 +1,12 @@
 package com.trimeo.Broadcastservice.services;
 
+import com.trimeo.Broadcastservice.amqp.Publisher;
 import com.trimeo.Broadcastservice.domains.ConsumptionRates;
 import com.trimeo.Broadcastservice.dtos.BroadcastDTO;
 import com.trimeo.Broadcastservice.interfaces.ProcessorService;
 import com.trimeo.Broadcastservice.repositories.ConsumptionRateRepository;
 import com.trimeo.Broadcastservice.repositories.ContactlistRepository;
+import com.trimeo.Broadcastservice.utils.DateUtils;
 import com.trimeo.Broadcastservice.utils.SMSUtils;
 import lombok.Data;
 import lombok.NonNull;
@@ -12,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -33,6 +36,12 @@ public class ProcessorServiceImpl implements ProcessorService {
     @NonNull
     private final SMSUtils smsUtils;
 
+    @NonNull
+    private final DateUtils dateUtils;
+
+    @NonNull
+    private final Publisher publisher;
+
     @Override
     public void incomingBroadcastPayload(BroadcastDTO broadcastDTO) {
 
@@ -41,6 +50,7 @@ public class ProcessorServiceImpl implements ProcessorService {
 
             if(broadcastDTO.isSend()){
                 //TODO: Call service incharge of messaging sending
+                log.info(">>>>>>> Sending this message asap <<<<<<<<<<<<<");
             }else{
                 chargeBroadcast(broadcastDTO);
             }
@@ -82,7 +92,8 @@ public class ProcessorServiceImpl implements ProcessorService {
         Boolean charged = true;
 
         if(charged){
-            scheduleChargedBroadcast();
+            // todo: add db field for num of contacts, credits consumed & update on consume
+            scheduleChargedBroadcast(broadcastDTO);
         }else {
             log.info("Failed to charge the broadcast message");
         }
@@ -90,8 +101,22 @@ public class ProcessorServiceImpl implements ProcessorService {
     }
 
     @Override
-    public void scheduleChargedBroadcast() {
+    public void scheduleChargedBroadcast(BroadcastDTO broadcastDTO) {
         // TODO: Call publisher to publish message to delay exchange ttl(time to send message)
+        // set send to true already charged
+        broadcastDTO.setSend(true);
+        // since we will publish to delay queue we calculate delay as sendTime - now
+        long delay = Timestamp.valueOf(broadcastDTO.getSendTime()).getTime() -
+                Timestamp.valueOf(dateUtils.getZonedTimeNow()).getTime();
+
+        log.info("delay :::::::: " + delay);
+        // delay -ve means send time is past so send now ie. delay = 0;
+        if(delay < 0){
+            delay = 0;
+            log.info(":::: Send date time is in past so send message now ::::");
+        }
+        // schedule broadcastSMS
+        publisher.sendToDelayExchange(broadcastDTO, delay);
     }
 
 }

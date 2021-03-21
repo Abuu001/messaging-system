@@ -10,5 +10,5 @@ public interface ProcessorService {
     int fetchNumberContactsInBroadcast(BroadcastDTO broadcastDTO);
     Set<String> fetchContactsForBroadcast(BroadcastDTO broadcastDTO);
     void chargeBroadcast(BroadcastDTO broadcastDTO);
-    void scheduleChargedBroadcast();
+    void scheduleChargedBroadcast(BroadcastDTO broadcastDTO);
 }
