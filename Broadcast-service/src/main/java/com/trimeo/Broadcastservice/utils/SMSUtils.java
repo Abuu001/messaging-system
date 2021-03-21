@@ -51,12 +51,10 @@ public class SMSUtils {
         StringBuilder content7bit = new StringBuilder();
 
         for (int i = 0; i < content.length(); i++) {
-            if (!GSM7BITEXT.contains(content.charAt(i) + "")) {
-                content7bit.append(content.charAt(i));
-            } else {
+            if (GSM7BITEXT.contains(content.charAt(i) + "")) {
                 content7bit.append('\u001b');
-                content7bit.append(content.charAt(i));
             }
+            content7bit.append(content.charAt(i));
         }
 
         if (content7bit.length() <= 160) {
