@@ -24,13 +24,13 @@ import java.util.Optional;
 public class ValidationServiceImpl implements ValidationService {
 
     @NonNull
-    private BroadcastRepository broadcastRepository;
+    private final BroadcastRepository broadcastRepository;
 
     @NonNull
-    private MessageStatusConfig messageStatusConfig;
+    private final MessageStatusConfig messageStatusConfig;
 
     @NonNull
-    private ShortcodesRepository shortcodesRepository;
+    private final ShortcodesRepository shortcodesRepository;
 
     @Override
     public boolean validateBroadcastPayload(@Valid BroadcastDTO broadcastDTO) {

@@ -12,6 +12,5 @@ import java.util.Set;
 public interface ContactlistRepository extends CrudRepository<Contactlist, Integer> {
 
     @Query(value="{ 'listID' : { '$in' : ?0 }}", fields="{ 'contactID' : 1, _id: 0}")
-    Set<String> findContactId(ArrayList<Integer> listIds);
-
+    Set<Contactlist> findContactId(ArrayList<Integer> listIds);
 }

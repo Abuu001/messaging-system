@@ -5,7 +5,6 @@ import com.trimeo.Broadcastservice.domains.ConsumptionRates;
 import com.trimeo.Broadcastservice.dtos.BroadcastDTO;
 import com.trimeo.Broadcastservice.interfaces.ProcessorService;
 import com.trimeo.Broadcastservice.repositories.ConsumptionRateRepository;
-import com.trimeo.Broadcastservice.repositories.ContactlistRepository;
 import com.trimeo.Broadcastservice.utils.DateUtils;
 import com.trimeo.Broadcastservice.utils.SMSUtils;
 import lombok.Data;
@@ -15,8 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Set;
 
 @Data
 @Slf4j
@@ -28,10 +25,13 @@ public class ProcessorServiceImpl implements ProcessorService {
     private final ValidationServiceImpl validationService;
 
     @NonNull
-    private final ContactlistRepository contactlistRepository;
+    private final ContactServiceImpl contactService;
 
     @NonNull
     private final ConsumptionRateRepository ratesRepository;
+
+    @NonNull
+    private final OutboundServiceImpl outboundService;
 
     @NonNull
     private final SMSUtils smsUtils;
@@ -49,29 +49,11 @@ public class ProcessorServiceImpl implements ProcessorService {
         validationService.shortCodeActiveAndExist(broadcastDTO.getSourceAddress())){
 
             if(broadcastDTO.isSend()){
-                //TODO: Call service incharge of messaging sending
-                log.info(">>>>>>> Sending this message asap <<<<<<<<<<<<<");
+                outboundService.createOutboundPayload(broadcastDTO);
             }else{
                 chargeBroadcast(broadcastDTO);
             }
         }
-    }
-
-    @Override
-    public int fetchNumberContactsInBroadcast(BroadcastDTO broadcastDTO) {
-        return fetchContactsForBroadcast(broadcastDTO).size();
-    }
-
-    @Override
-    public Set<String> fetchContactsForBroadcast(BroadcastDTO broadcastDTO) {
-
-        ArrayList<Integer> listIds = new ArrayList<>();
-
-        for(int i = 0; i < broadcastDTO.getListIDs().split(",").length; i++){
-            listIds.add(Integer.valueOf(broadcastDTO.getListIDs().split(",")[i]));
-        }
-
-        return contactlistRepository.findContactId(listIds);
     }
 
     @Override
@@ -82,7 +64,7 @@ public class ProcessorServiceImpl implements ProcessorService {
 
         log.info("::::::::  Calculating sms cost ::::::::::::");
         double messageLength = SMSUtils.getPartCount(broadcastDTO.getMessage());
-        double numberOfRecipients = fetchNumberContactsInBroadcast(broadcastDTO);
+        double numberOfRecipients = contactService.fetchNumberContactsInBroadcast(broadcastDTO);
         double consumptionRate = rates.getRate();
 
         double smsCost = messageLength * numberOfRecipients * consumptionRate;
