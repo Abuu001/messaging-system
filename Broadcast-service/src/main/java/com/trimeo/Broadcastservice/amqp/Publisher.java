@@ -9,6 +9,7 @@ import org.springframework.amqp.AmqpConnectException;
 import org.springframework.amqp.AmqpIOException;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -44,5 +45,10 @@ public class Publisher {
         }catch (Exception ex){
             log.error("Exception occurred publishing message ::: " + ex.getMessage());
         }
+    }
+
+    @Recover
+    public void failBroadcastAfterRetry(AmqpConnectException ex, String queueName){
+        //
     }
 }
