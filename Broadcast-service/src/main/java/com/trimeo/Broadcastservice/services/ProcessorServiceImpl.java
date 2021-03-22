@@ -95,14 +95,13 @@ public class ProcessorServiceImpl implements ProcessorService {
             // todo: add db field for num of contacts, credits consumed & update on consume
             scheduleChargedBroadcast(broadcastDTO);
         }else {
-            log.info("Failed to charge the broadcast message");
+            log.error("Failed to charge the broadcast message");
         }
 
     }
 
     @Override
     public void scheduleChargedBroadcast(BroadcastDTO broadcastDTO) {
-        // TODO: Call publisher to publish message to delay exchange ttl(time to send message)
         // set send to true already charged
         broadcastDTO.setSend(true);
         // since we will publish to delay queue we calculate delay as sendTime - now
