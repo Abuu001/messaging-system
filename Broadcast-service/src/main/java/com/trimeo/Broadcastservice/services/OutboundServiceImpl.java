@@ -8,7 +8,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -17,9 +16,6 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 public class OutboundServiceImpl implements OutboundService {
-
-    @NonNull
-    private final AmqpTemplate amqpTemplate;
 
     @NonNull
     private final ContactServiceImpl contactService;
@@ -31,11 +27,11 @@ public class OutboundServiceImpl implements OutboundService {
 
         OutboundDTO outboundDTO = new OutboundDTO();
 
-        for(String var : contactSet){
+        for(String msisdn : contactSet){
 
             outboundDTO.set_Id(broadcastDTO.getBroadcastID());
             outboundDTO.setShortCode(broadcastDTO.getSourceAddress());
-            outboundDTO.setDestAddr(var);
+            outboundDTO.setDestAddr(msisdn);
             outboundDTO.setClientCode(broadcastDTO.getClientCode());
             outboundDTO.setMessage(broadcastDTO.getMessage());
             outboundDTO.setNetworkId("1"); //todo: remove hard coded vals
