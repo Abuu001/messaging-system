@@ -7,6 +7,7 @@ import com.trimeo.Broadcastservice.domains.Outbound;
 import com.trimeo.Broadcastservice.dtos.BroadcastDTO;
 import com.trimeo.Broadcastservice.dtos.OutboundDTO;
 import com.trimeo.Broadcastservice.interfaces.OutboundService;
+import com.trimeo.Broadcastservice.mongo_sequences.GenerateOutSequence;
 import com.trimeo.Broadcastservice.repositories.OutboundRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,9 @@ public class OutboundServiceImpl implements OutboundService {
     private final OutboundRepository outboundRepository;
 
     @NonNull
+    private final GenerateOutSequence generateOutSequence;
+
+    @NonNull
     private final Publisher publisher;
 
     @NonNull
@@ -43,7 +47,7 @@ public class OutboundServiceImpl implements OutboundService {
 
         for(String msisdn : contactSet){
 
-            outboundDTO.set_Id(broadcastDTO.getBroadcastID());
+            outboundDTO.set_Id(generateOutSequence.generateSequence(OutboundDTO.SEQUENCE_NAME));
             outboundDTO.setShortCode(broadcastDTO.getSourceAddress());
             outboundDTO.setDestAddr(msisdn);
             outboundDTO.setClientCode(broadcastDTO.getClientCode());
