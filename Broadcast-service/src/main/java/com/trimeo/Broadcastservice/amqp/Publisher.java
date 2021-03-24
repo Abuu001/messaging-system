@@ -47,6 +47,7 @@ public class Publisher {
         }
     }
 
+    @Async("threadPoolTaskExecutor")
     public void publishToQueue(Object object, String exchange, String routingKey){
         try {
             amqpTemplate.convertAndSend(exchange, routingKey, object);
