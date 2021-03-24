@@ -47,8 +47,17 @@ public class Publisher {
         }
     }
 
+    public void publishToQueue(Object object, String exchange, String routingKey){
+        try {
+            amqpTemplate.convertAndSend(exchange, routingKey, object);
+            log.info("Message published to exchange :: "+ exchange+" successfully using routing-key :: " + routingKey);
+        }catch (Exception ex){
+            log.error("Fatal error occurred during publish to queue ::: " + ex.getMessage());
+        }
+    }
+
     @Recover
     public void failBroadcastAfterRetry(AmqpConnectException ex, String queueName){
-        //
+        log.error("Failed to publish after n retries to queue : " + queueName);
     }
 }

@@ -1,9 +1,13 @@
 package com.trimeo.Broadcastservice.services;
 
+import com.trimeo.Broadcastservice.amqp.Publisher;
+import com.trimeo.Broadcastservice.configs.QueueConfig;
 import com.trimeo.Broadcastservice.domains.MessageTypes;
+import com.trimeo.Broadcastservice.domains.Outbound;
 import com.trimeo.Broadcastservice.dtos.BroadcastDTO;
 import com.trimeo.Broadcastservice.dtos.OutboundDTO;
 import com.trimeo.Broadcastservice.interfaces.OutboundService;
+import com.trimeo.Broadcastservice.repositories.OutboundRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -20,6 +24,15 @@ public class OutboundServiceImpl implements OutboundService {
 
     @NonNull
     private final ContactServiceImpl contactService;
+
+    @NonNull
+    private final OutboundRepository outboundRepository;
+
+    @NonNull
+    private final Publisher publisher;
+
+    @NonNull
+    private final QueueConfig queueConfig;
 
     @Override
     public void createOutboundPayload(BroadcastDTO broadcastDTO) {
@@ -41,7 +54,7 @@ public class OutboundServiceImpl implements OutboundService {
             outboundDTO.setNumberOfSends(1);
             outboundDTO.setConnector("sdp"); //todo: remove hard coded vals
 
-            CompletableFuture<OutboundDTO> outboundFuture = persistDataInOutboundDB(outboundDTO);
+            CompletableFuture<Outbound> outboundFuture = persistDataInOutboundDB(outboundDTO);
 
             outboundFuture.thenAccept( o -> {
                 pushToOutboundQueue(outboundDTO);
@@ -52,14 +65,29 @@ public class OutboundServiceImpl implements OutboundService {
 
     @Override
     @SneakyThrows
-    public CompletableFuture<OutboundDTO> persistDataInOutboundDB( OutboundDTO outboundDTO ) {
+    public CompletableFuture<Outbound> persistDataInOutboundDB( OutboundDTO outboundDTO ) {
 
-        return null;
+        Outbound outbound = new Outbound();
+        outbound.set_id(outboundDTO.get_Id());
+        outbound.setConnector(outboundDTO.getConnector());
+        outbound.setClientCode(outboundDTO.getClientCode());
+        outbound.setDestination(outboundDTO.getDestAddr());
+        outbound.setExpiryTime(outboundDTO.getExpiryTime());
+        outbound.setMessage(outboundDTO.getMessage());
+        outbound.setNetworkId(outboundDTO.getNetworkId());
+        outbound.setSendTime(outboundDTO.getSendTime());
+        outbound.setShortCode(outboundDTO.getShortCode());
+        outbound.setNumberOfSends(1);
+
+        outboundRepository.save(outbound);
+
+        return CompletableFuture.completedFuture(outbound);
     }
 
     @Override
     @SneakyThrows
     public void pushToOutboundQueue(OutboundDTO outboundDTO) {
-
+        log.info("Publishing BroadcastID : " + outboundDTO.get_Id() + " to Queue ");
+        publisher.publishToQueue(outboundDTO,queueConfig.getOutExchange(), queueConfig.getOutKey());
     }
 }

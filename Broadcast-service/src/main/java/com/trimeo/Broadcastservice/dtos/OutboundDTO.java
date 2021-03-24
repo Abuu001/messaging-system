@@ -20,6 +20,8 @@ public class OutboundDTO {
 
     private String expiryTime;
 
+    private String sendTime;
+
     private MessageTypes messageType = MessageTypes.BROADCAST;
 
     private int numberOfSends;
