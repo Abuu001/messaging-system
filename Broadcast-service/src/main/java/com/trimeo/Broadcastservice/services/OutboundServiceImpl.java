@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Service
@@ -40,18 +41,25 @@ public class OutboundServiceImpl implements OutboundService {
             outboundDTO.setNumberOfSends(1);
             outboundDTO.setConnector("sdp"); //todo: remove hard coded vals
 
+            CompletableFuture<OutboundDTO> outboundFuture = persistDataInOutboundDB(outboundDTO);
+
+            outboundFuture.thenAccept( o -> {
+                pushToOutboundQueue(outboundDTO);
+            });
+
         }
     }
 
     @Override
     @SneakyThrows
-    public void persistDataInOutboundDB() {
+    public CompletableFuture<OutboundDTO> persistDataInOutboundDB( OutboundDTO outboundDTO ) {
 
+        return null;
     }
 
     @Override
     @SneakyThrows
-    public void pushToOutboundQueue() {
+    public void pushToOutboundQueue(OutboundDTO outboundDTO) {
 
     }
 }
