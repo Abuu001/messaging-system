@@ -22,7 +22,7 @@ import java.util.Map;
 public class BroadcastQueueInitializer {
 
     @NonNull
-    private QueueConfig queueConfig;
+    private final QueueConfig queueConfig;
 
     @Bean
     Queue broadcastQueue(){

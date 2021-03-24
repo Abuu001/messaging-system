@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 public class OutboundQueueInitializer {
 
     @NonNull
-    private QueueConfig queueConfig;
+    private final QueueConfig queueConfig;
 
     @Bean
     Queue outboundQueue(){
