@@ -7,6 +7,7 @@ import com.trimeo.Broadcastservice.dtos.BroadcastDTO;
 import com.trimeo.Broadcastservice.interfaces.ValidationService;
 import com.trimeo.Broadcastservice.repositories.BroadcastRepository;
 import com.trimeo.Broadcastservice.repositories.ShortcodesRepository;
+import com.trimeo.Broadcastservice.utils.DateUtils;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,9 @@ public class ValidationServiceImpl implements ValidationService {
     @NonNull
     private final ShortcodesRepository shortcodesRepository;
 
+    @NonNull
+    private final DateUtils dateUtils;
+
     @Override
     public boolean validateBroadcastPayload(@Valid BroadcastDTO broadcastDTO) {
 
@@ -41,10 +45,8 @@ public class ValidationServiceImpl implements ValidationService {
             // check if message is active : not cancelled
             if(broadcast.get().getActive() == messageStatusConfig.getActiveMessage()) {
                 // check that send time hasn't passed
-                if(Timestamp.valueOf(broadcast.get().getExpiryTime()).getTime() >= Timestamp.valueOf(broadcast.get().getSendTime()).getTime()) {
-                    log.info("Message Passed Validation " + broadcast.get().get_id());
-                    return true;
-                }
+                log.info("Payload validation passed for broadcast id : " + broadcast.get().get_id());
+                return true;
             }
         }
         log.error(":::::: Payload for Broadcast message_id " +broadcastDTO.getBroadcastID()+ " Failed validation :::::::");
@@ -61,5 +63,13 @@ public class ValidationServiceImpl implements ValidationService {
         }
         log.error(":::::: Shortcode " + shortCode + " Failed validation ::::::: ");
         return false;
+    }
+
+    @Override
+    public boolean messageNotPastExpiryDateTime(String dateTime) {
+        log.info("message ExpiryDatetime validation : + message has expired ? " +
+                (Timestamp.valueOf(dateUtils.getZonedTimeNow()).getTime() > Timestamp.valueOf(dateTime).getTime()));
+
+        return (Timestamp.valueOf(dateUtils.getZonedTimeNow()).getTime() <= Timestamp.valueOf(dateTime).getTime());
     }
 }

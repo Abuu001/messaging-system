@@ -46,13 +46,16 @@ public class ProcessorServiceImpl implements ProcessorService {
     public void incomingBroadcastPayload(BroadcastDTO broadcastDTO) {
 
         if(validationService.validateBroadcastPayload(broadcastDTO) &&
-        validationService.shortCodeActiveAndExist(broadcastDTO.getSourceAddress())){
+                validationService.messageNotPastExpiryDateTime(broadcastDTO.getExpiryTime()) &&
+                validationService.shortCodeActiveAndExist(broadcastDTO.getSourceAddress())){
 
             if(broadcastDTO.isSend()){
                 outboundService.createOutboundPayload(broadcastDTO);
             }else{
                 chargeBroadcast(broadcastDTO);
             }
+        }else {
+            log.error(":::: Message Failed validation ::::");
         }
     }
 

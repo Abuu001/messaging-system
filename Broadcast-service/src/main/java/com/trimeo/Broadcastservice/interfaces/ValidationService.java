@@ -8,5 +8,5 @@ public interface ValidationService {
 
     boolean validateBroadcastPayload(@Valid BroadcastDTO broadcastDTO);
     boolean shortCodeActiveAndExist(String shortCode);
-
+    boolean messageNotPastExpiryDateTime(String dateTime);
 }
