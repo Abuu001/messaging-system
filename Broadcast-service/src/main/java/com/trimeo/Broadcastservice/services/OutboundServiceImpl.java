@@ -52,7 +52,7 @@ public class OutboundServiceImpl implements OutboundService {
             outboundDTO.setDestAddr(msisdn);
             outboundDTO.setClientCode(broadcastDTO.getClientCode());
             outboundDTO.setMessage(broadcastDTO.getMessage());
-            outboundDTO.setNetworkId("1"); //todo: remove hard coded vals
+            outboundDTO.setNetworkId(1); //todo: remove hard coded vals
             outboundDTO.setSendTime(broadcastDTO.getSendTime());
             outboundDTO.setExpiryTime(broadcastDTO.getExpiryTime());
             outboundDTO.setMessageType(MessageTypes.BROADCAST);

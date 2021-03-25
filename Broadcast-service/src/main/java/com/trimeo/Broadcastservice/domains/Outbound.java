@@ -21,7 +21,9 @@ public class Outbound {
 
     private String message;
 
-    private String networkId;
+    private MessageTypes messageType = MessageTypes.BROADCAST;
+
+    private Integer networkId;
 
     private String sendTime;
 

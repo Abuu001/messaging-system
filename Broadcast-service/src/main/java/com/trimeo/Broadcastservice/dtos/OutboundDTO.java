@@ -22,7 +22,7 @@ public class OutboundDTO {
 
     private String message;
 
-    private String networkId;
+    private Integer networkId;
 
     private String expiryTime;
 
