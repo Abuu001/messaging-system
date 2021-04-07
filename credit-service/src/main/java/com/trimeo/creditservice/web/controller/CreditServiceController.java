@@ -26,7 +26,7 @@ public class CreditServiceController {
         return new ResponseEntity<>("test", HttpStatus.OK); // TODO: IMPL service
     }
 
-    @PostMapping(value = "allocate", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "consume", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> consumeCredits(@Valid @RequestBody CreditsDTO payload){
         return new ResponseEntity<>("test", HttpStatus.OK); // TODO: IMPL service
     }
