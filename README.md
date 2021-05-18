@@ -22,7 +22,7 @@ The Primary language/framework used in the code base is java/springboot and the 
 
 ### RabbitMQ
 - Install RabbitmQ
-- Make sure you install [rabbitmq-delayed-message-exchange]("https://github.com/rabbitmq/rabbitmq-delayed-message-exchange") plugin. This helps in scheduling the messages.
+- Make sure you install [rabbitmq-delayed-message-exchange](https://github.com/rabbitmq/rabbitmq-delayed-message-exchange) plugin. This helps in scheduling the messages.
 
 **NB**
 Ensure you run __config-server__ before you run any other service as they get __configuration__ details from config-server service.
