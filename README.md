@@ -13,7 +13,7 @@ The Primary language/framework used in the code base is java/springboot and the 
 - __config-server__ : Holds all the microservices config details.
 - __credit-service__ : Service is incharge of creating charges, crediting and debiting clients accounts.
 - __notification-service__ : Incharge of all notification or observability of the system and sending alerts.
-- __MidlleWare__ : Should be the API interfacing between the front-end and back-end.
+- __Middleware__ : Should be the API interfacing between the front-end and back-end.
 
 ### Tech Used(Once everything is completed):
 1. [RabbitMQ](https://www.rabbitmq.com/download.html)
