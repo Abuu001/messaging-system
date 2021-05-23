@@ -6,6 +6,7 @@ import com.trimeo.Broadcastservice.domains.MessageTypes;
 import com.trimeo.Broadcastservice.domains.Outbound;
 import com.trimeo.Broadcastservice.dtos.BroadcastDTO;
 import com.trimeo.Broadcastservice.dtos.OutboundDTO;
+import com.trimeo.Broadcastservice.interfaces.ContactService;
 import com.trimeo.Broadcastservice.interfaces.OutboundService;
 import com.trimeo.Broadcastservice.mongo_sequences.GenerateOutSequence;
 import com.trimeo.Broadcastservice.repositories.OutboundRepository;
@@ -24,7 +25,7 @@ import java.util.concurrent.CompletableFuture;
 public class OutboundServiceImpl implements OutboundService {
 
     @NonNull
-    private final ContactServiceImpl contactService;
+    private final ContactService contactService;
 
     @NonNull
     private final OutboundRepository outboundRepository;

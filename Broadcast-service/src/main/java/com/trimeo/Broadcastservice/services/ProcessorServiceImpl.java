@@ -3,7 +3,10 @@ package com.trimeo.Broadcastservice.services;
 import com.trimeo.Broadcastservice.amqp.Publisher;
 import com.trimeo.Broadcastservice.domains.ConsumptionRates;
 import com.trimeo.Broadcastservice.dtos.BroadcastDTO;
+import com.trimeo.Broadcastservice.interfaces.ContactService;
+import com.trimeo.Broadcastservice.interfaces.OutboundService;
 import com.trimeo.Broadcastservice.interfaces.ProcessorService;
+import com.trimeo.Broadcastservice.interfaces.ValidationService;
 import com.trimeo.Broadcastservice.repositories.ConsumptionRateRepository;
 import com.trimeo.Broadcastservice.utils.DateUtils;
 import com.trimeo.Broadcastservice.utils.SMSUtils;
@@ -22,16 +25,16 @@ import java.sql.Timestamp;
 public class ProcessorServiceImpl implements ProcessorService {
 
     @NonNull
-    private final ValidationServiceImpl validationService;
+    private final ValidationService validationService;
 
     @NonNull
-    private final ContactServiceImpl contactService;
+    private final ContactService contactService;
 
     @NonNull
     private final ConsumptionRateRepository ratesRepository;
 
     @NonNull
-    private final OutboundServiceImpl outboundService;
+    private final OutboundService outboundService;
 
     @NonNull
     private final SMSUtils smsUtils;
