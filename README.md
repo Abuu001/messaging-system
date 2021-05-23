@@ -1,5 +1,5 @@
 # Messaging system
-### _Text Message Sending System_
+### _SMS Message Sending System_
 
 This repository contains code base for backend and api for creating an sms/message service.
 The Primary language/framework used in the code base is java/springboot and the app has been built in a microservice architecture.
