@@ -1,0 +1,3 @@
+transactional:
+  in: IN.TRANSACTIONAL
+  out: OUT.BROADCAST
