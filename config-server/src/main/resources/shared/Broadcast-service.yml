@@ -14,7 +14,7 @@ spring:
 
 broadcast:
   in: IN.BROADCAST
-  out: OUT.BROADCAST
+  out: OUT.OUTGOING
   out-exchange: KE.EXCH
   delay-exchange: DELAY.EXCH
   prefetch: 10

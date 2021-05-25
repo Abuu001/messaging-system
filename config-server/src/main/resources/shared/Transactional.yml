@@ -15,11 +15,11 @@ spring:
 transactional:
   queue:
     in: IN.TRANSACTIONAL
-    out: OUT.BROADCAST
+    out: OUT.OUTGOING
     out-exchange: KE.EXCH
     prefetch: 10
     consumerCount: 5
-    routing-key: BROAD.KEY
+    routing-key: TRANSACTIONAL.KEY
     out_key: OUT.KEY
   time:
     format: yyyy-MM-dd HH:mm:ss.SSS
