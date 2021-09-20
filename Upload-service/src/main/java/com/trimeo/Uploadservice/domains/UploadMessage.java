@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class UploadMessage {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotNull(message = "destination cannot be empty")
