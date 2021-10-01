@@ -1,14 +1,11 @@
 package com.trimeo.Uploadservice.interfaces;
 
-import org.apache.poi.ss.usermodel.Workbook;
-
-import java.io.File;
 
 public interface FileDataReader {
 
-    void readFromExcell(String filePath);
+    Boolean isFileCsvOrExcell(String fileType);
 
-    void readFromCSv(String filePath);
+    void saveUploadDataToQueue();
 
-    Workbook getWorkbook(File file);
+    void saveFileDetails(String filePath);
 }
