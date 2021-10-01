@@ -12,4 +12,6 @@ public interface UploadRepository extends JpaRepository<InboundUploadMessage,Int
 
    /* @Query(value = "SELECT m.id,m.destination,m.message,m.messageType, m.sendTime,m.sourceAddress FROM OutboundPayload m",nativeQuery = true)
     List<UploadMessage> fetchOutBoundPayload();*/
+
+    List<InboundUploadMessage> findByStatus(int status);
 }
