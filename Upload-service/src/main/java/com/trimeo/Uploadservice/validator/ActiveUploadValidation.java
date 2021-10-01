@@ -9,9 +9,8 @@ public class ActiveUploadValidation implements com.trimeo.Uploadservice.interfac
     @Override
     public  boolean isUploadActive(Integer status) {
 
-        if(status == 0){
-            return false;
-        }
+        if(status == 0) return false;
+
         return true;
     }
 }
