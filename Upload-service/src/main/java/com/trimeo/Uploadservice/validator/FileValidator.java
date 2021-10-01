@@ -24,12 +24,10 @@ public class FileValidator {
             if((mimeType.equalsIgnoreCase("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") ||
                     (mimeType.equalsIgnoreCase("application/vnd.ms-excel"))   )){
 
-               fileDataReaderImp.readFromExcell(filePath);
-                return true;
+                return fileDataReaderImp.isFileCsvOrExcell("excellFile");
             }else if(mimeType.equalsIgnoreCase("text/csv")){
 
-              fileDataReaderImp.readFromCSv(filePath);
-              return true;
+                return fileDataReaderImp.isFileCsvOrExcell("csvFile");
             }
         } catch (IOException e) {
             e.printStackTrace();
