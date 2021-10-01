@@ -1,6 +1,7 @@
 package com.trimeo.Uploadservice.domains;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,14 +11,19 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "upload_message")
 public class UploadMessage {
 
-    @Id
+    /*@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer id;*/
+
+    @Id
+    @Column(unique = true)
+    private String id;
 
     @NotNull(message = "destination cannot be empty")
     private String destination;
