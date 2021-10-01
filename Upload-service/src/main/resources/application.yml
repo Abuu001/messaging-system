@@ -21,14 +21,17 @@ spring:
     username: guest
     password: guest
 
-  # batch:
-  #   initialize-schema: always
+  batch:
+    initialize-schema: always
 
 server:
       port: 8005
 
 upload:
-  PROPERTY_EXCEL_SOURCE_FILE_PATH: /home/lugonzo/intellij/messagingSystemData/phonedata1.xlsx
+  batch-files-config:
+    PROPERTY_SOURCE_FILE_PATH: /home/lugonzo/intellij/messagingSystemData/uploaddata1.xlsx
+    chunckSize: 500
+    uuidLength: 6
   rabbit:
     inbound_upload_queue: INBOUNDUPLOAD.QUEUE
     inbound_upload_exchange: INBOUNDUPLOAD.EXCHANGE
