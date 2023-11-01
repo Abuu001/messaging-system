@@ -13,7 +13,11 @@ import java.nio.file.Path;
 public class FileValidator {
 
     @Autowired
-    FileDataReaderImp fileDataReaderImp;
+    private final FileDataReaderImp fileDataReaderImp;
+
+    public FileValidator(FileDataReaderImp fileDataReaderImp) {
+        this.fileDataReaderImp = fileDataReaderImp;
+    }
 
     public boolean checkIfFileIsValid(String filePath) throws IOException {
 
